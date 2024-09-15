@@ -1,0 +1,126 @@
+.present-main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+}
+
+.noRecord{
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.emp-box{
+    display: flex;
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 5px;
+    padding: 0.6rem 0;
+    height: 5rem;
+    margin-bottom: 0.3rem;
+}
+.bg-red{
+    background-color: rgb(255, 223, 223);
+}
+.bg-green{
+    background-color: rgb(221, 244, 221);
+}
+.absemt-emp-h3{
+    font-size: 17px;
+    margin-bottom: 0.3rem;
+    color: rgb(47, 45, 45);
+}
+.img{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+
+}
+.img img{
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    transition-duration: 0.3s;
+}
+.img img:hover{
+    transform: scale(1.1);
+}
+.detail{
+    width: 65%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-color: red; */
+}
+.detail div{
+     margin: 0.5rem 0;
+    margin-left: 2rem; 
+    display: flex;
+    /* justify-content: center; */
+    /* background-color: blue; */
+    
+}
+.detail div span{
+    /* width: 7rem; */
+    margin-right: 0.4rem;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.no-emp{
+    width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 1rem 0;
+}
+
+.detail div p{
+    font-size: 18px;
+}
+.marker{
+    width: 20%;
+    height: 100%;
+    /* background-color: black; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.marker button{
+    padding: 0.4rem 1rem;
+    font-size: 15px;
+    outline: none;
+    border: none;
+    background-color: red;
+    border-radius: 5px;
+    color: #fff;
+    transition-duration: 0.3s;
+}
+.marker button:active{
+    transform: scale(0.9);
+}
+
+@media only screen and (max-width:460px)
+{
+    .detail div{
+        margin-left: 0;
+    }
+    .detail{
+        width: 60%;
+    }
+    .img{
+        width: 18%;
+    }
+}

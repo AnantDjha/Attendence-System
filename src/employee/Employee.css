@@ -1,0 +1,133 @@
+.detail-emp{
+    width: 60rem;
+    margin: 1rem auto;
+    background-color: #fff;
+    /* width: 7rem; */
+    padding: 1rem 0;
+    height: 8rem;
+    border-radius: 10px;
+    display: flex;
+}
+.emp-personal-detail{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.img-emp{
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+.img-emp img{
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+}
+.text{
+    /* width: 80%; */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding:0 1rem ;
+}
+.text div{
+    display: flex;
+    margin: 0.5rem 0;
+}
+.text div p{
+    font-size: 18px;
+}
+.text div span{
+    width: 9rem;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.select-month{
+    width: 60rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    margin: 1rem auto;
+    background-color: #fff;
+    border-radius: 10px;
+    
+}
+.select-month p{
+    font-size: 20px;
+    margin-left: 0.5rem;
+}
+.select-month div{
+    width: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+}
+.select-month div select{
+    width: 50%;
+    /* color: black; */
+    border: 2px solid black;
+}
+.select-month div span{
+    width: 50%;
+}
+
+
+
+.bar{
+    text-align: center;
+    margin: 2rem 1rem;
+}
+.bar p{
+    font-size: 18px;
+    font-weight: bold;
+}
+.progress{
+    color: black;
+}
+
+.tracker{
+    width: 60rem;
+    margin: 3rem auto;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+@media only screen and (max-width:1000px)
+{
+    .detail-emp{
+        width: 95%;
+    }
+    .tracker{
+        width: 95%;
+    }
+    .select-month {
+        width: 95%;
+    }
+}
+@media only screen and (max-width:626px)
+{
+   .img-emp img{
+    width:5rem;
+    height: 5rem;
+   }
+}
+@media only screen and (max-width:450px)
+{
+.emp-personal-detail{
+    flex-direction: column-reverse;
+    
+}
+.detail-emp{
+    height: fit-content;
+}
+}

@@ -1,0 +1,132 @@
+.main-home{
+    width: 100vw;
+    height: 100vh;
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* background-color: red; */
+}
+.msg-g{
+    width: 40rem;
+    padding: 0.5rem 0;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    background-color: green;
+    border-radius: 10px;
+    color: white;
+}
+.msg-r{
+    width: 40rem;
+    padding: 0.5rem 0;
+    margin-bottom: 0.3rem;
+    text-align: center;
+    background-color: rgb(225, 177, 173);
+    border-radius: 10px;
+}
+
+.attendence-content{
+    width: 40rem;
+    background-color: white;
+   padding: 1rem;
+   border-radius: 10px;
+
+}
+
+.attendence-content form{
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center ;
+}
+
+.emp-id{
+    width: 80%;
+    margin: 1rem 0;
+   
+}
+.emp-id p , .first p , .last p{
+    width: 100%;
+    font-size: 15px;
+    color: rgb(0, 87, 158);
+    
+}
+.emp-id input , .first input , .last input , select{
+    width: 100%;
+    padding: 0.4rem 0;
+    border: none;
+    outline: none;
+    font-size: 17px;
+    border-bottom: 2px solid black;
+}
+.emp-id span ,.first span , .last span{
+    font-size: 14px;
+    color: red;
+}
+.or{
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.name{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+.first , .last{
+    width: 45%;
+   
+}
+
+.buttons{
+    width: 80%;
+    /* background-color: black; */
+    display: flex;
+    justify-content: center;
+}
+.buttons button , .buttons span{
+    width: 45%;
+    padding:0.5rem 0;
+    border: none;
+    outline: none;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition-duration: 0.3s;
+}
+.buttons button:active , .buttons span:active{
+    transform: scale(0.9);
+}
+.attend-g{
+    width: 40rem;
+    padding: 2rem 0;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+    text-align: center;
+    margin:0.4rem;
+}
+.attend-r{
+    width: 40rem;
+    padding: 2rem 0;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    margin:0.4rem;
+}
+
+@media only screen and (max-width:696px)
+{
+    .attendence-content{
+        width: 90%;
+    }
+}
