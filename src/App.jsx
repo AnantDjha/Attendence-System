@@ -8,10 +8,15 @@ import { useContext, useEffect } from 'react'
 import { adminContext } from './context/adminContext'
 import Admin from './admin/Admin'
 import Employee from './employee/Employee'
+import EmpLogin from './empLogin/EmpLogin'
+import { empContext } from './context/empContext'
+import AttendenceMark from './attendenceMark/AttendenceMark'
 
 function App() {
 
   const {admin , setAdmin} = useContext(adminContext)
+  const {employee , setEmployee} = useContext(empContext)
+
 
   const getAdmin = ()=>{
     axios.defaults.withCredentials = true
@@ -20,15 +25,26 @@ function App() {
       setAdmin(res.data)
     })
   }
+  const getEmployee = ()=>{
+    axios.defaults.withCredentials = true
+    axios.get("http://localhost:5000/emp-login")
+    .then((res)=>{
+      setEmployee(res.data)
+    })
+  }
 
   useEffect(()=>{
     getAdmin()
-    console.log(admin);
+    getEmployee()
     
   } , [])
   const router = createBrowserRouter([
     {
       path:"/",
+      element:<><EmpLogin/><Navbar/></>
+    },
+    {
+      path:"/home",
       element:<><Home/><Navbar/></>
     },
     {
@@ -43,6 +59,10 @@ function App() {
       path:"/employee/:id",
       element:<><Employee/></>
     },
+    {
+      path:"/attendence-mark/:id",
+      element:<><AttendenceMark/><Navbar/></>
+    }
   ])
   return (
     <>

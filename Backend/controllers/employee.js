@@ -36,6 +36,56 @@ const fetchDetail = async (req , res)=>{
         
     }
 }
+// const markAttendence = async (req , res)=>{
+//     try{
+//         const data = await employeeModle.findOne({empId : req.body.empId});
+       
+//         if(!data)
+//         {
+//             return res.json({got: false , message:"No Record found"})
+//         }
+//         else{
+//             if(data.password !== req.body.password)
+//             {
+//                 return res.json({got: false , message:"Incorrect Password"})
+//             }
+//             else{
+//                 const date = new Date()
+//                 let day = date.getDate()
+//                 let month = date.getMonth()
+//                 let year = date.getFullYear()
+
+//                 const attendenceData = await attendence.findOne(
+//                     {
+//                         empId:req.body.empId , 
+//                         present:{
+//                             date:day , 
+//                             month:month+1,
+//                             year:year
+//                         }
+//                     })
+
+//                 if(!attendenceData)
+//                 {
+//                     await attendence.updateOne({empId:req.body.empId} , {
+//                         $push:{present:{date:day , month:month+1 , year}},
+                        
+//                         $pull:{absent:{date:day , month:month+1 , year }}
+//                     })
+//                     return res.json({got:true , message:"Attendence Marked Successfully"})
+//                 }
+//                 else{
+//                     return res.json({got:true , message:"Attendence Already Marked"})
+//                 }
+//             }
+//         }
+//     }
+//     catch(e)
+//     {
+//         console.log(e);
+//         res.json({got:false , message:"something went wrong"})
+//     }
+// }
 
 
 const markAttendence = async (req , res)=>{
@@ -47,11 +97,7 @@ const markAttendence = async (req , res)=>{
             return res.json({got: false , message:"No Record found"})
         }
         else{
-            if(data.password !== req.body.password)
-            {
-                return res.json({got: false , message:"Incorrect Password"})
-            }
-            else{
+           
                 const date = new Date()
                 let day = date.getDate()
                 let month = date.getMonth()
@@ -80,7 +126,7 @@ const markAttendence = async (req , res)=>{
                     return res.json({got:true , message:"Attendence Already Marked"})
                 }
             }
-        }
+        
     }
     catch(e)
     {
