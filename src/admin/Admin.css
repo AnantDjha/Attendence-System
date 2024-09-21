@@ -49,6 +49,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: #fff;
+    flex-wrap: wrap;
 }
 
 .btn button{
@@ -66,10 +67,27 @@
     transform: scale(0.9);
 
 }
+.increaserAndDecreaser button{
+    padding: 0.2rem 1rem;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: none;
+    outline: none;
+    margin: 0 0.4rem;
+    border-radius: 5px;
+    transition-duration: 0.2s;
+}
+.increaserAndDecreaser button:active{
+    transform: scale(0.9);
+}
 .sorter{
     display: flex;
     width: 10rem;
     align-items: center;
+    /* background-color: blue; */
+    width: 13rem;
 }
 .sorter span{
     font-size: 17px;
@@ -91,4 +109,31 @@
     .main-admin h3{
         width: 95%;
     }
+}
+
+@media only screen and (max-width:700px)
+{
+    .buttonAndSort{
+        height: fit-content;
+        padding: 0.3rem 0;
+    }
+    .sorter{
+        width: fit-content;
+        margin-right: 0.3rem;
+    }
+    .btn button{
+        margin: 0 0.2rem;
+    }
+  
+}
+@media only screen and (max-width:672px)
+{
+   .increaserAndDecreaser{
+    width: 100%;
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    margin-top: 0.8rem;
+   }
+   
 }

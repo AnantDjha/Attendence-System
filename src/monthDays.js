@@ -1,4 +1,4 @@
-export const monthDays = {
+const monthDays = {
     jan: { days: 31, value: 1 },
     feb: { days: 28, value: 2 },
     mar: { days: 31, value: 3 },
@@ -13,3 +13,5 @@ export const monthDays = {
     dec: { days: 31, value: 12 }
 };
 
+const montIndex = ["jan" , "feb" , "mar" , "apr" , "may" , "jun" , "jul" , "aug" , "sep" , "oct" , "nov" , "dec"]
+export {monthDays , montIndex}

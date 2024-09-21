@@ -102,6 +102,50 @@
     flex-wrap: wrap;
 }
 
+.payOut{
+    width: 60rem;
+    background-color: #fff;
+    margin:auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+}
+.payOut h3{
+    width: 95%;
+    margin: 1rem 0;
+}
+.calculate-payout{
+    width: 95%;
+}
+.calculate-payout div{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: red; */
+    margin-bottom: 0.7rem;
+    
+}
+.calculate-payout div b{
+    /* background-color: blue; */
+    /* margin-right: 0; */
+    font-size: 20px;
+    margin-right: 0.3rem;
+    
+}
+.calculate-payout div span{
+    font-size: 19px;
+    margin-left: 0.3rem;
+
+}
+.calculate-payout div:nth-child(4) 
+{
+    padding: 0.4rem 0;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    
+}
+
 @media only screen and (max-width:1000px)
 {
     .detail-emp{
@@ -111,6 +155,9 @@
         width: 95%;
     }
     .select-month {
+        width: 95%;
+    }
+    .payOut{
         width: 95%;
     }
 }

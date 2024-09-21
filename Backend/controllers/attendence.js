@@ -55,7 +55,7 @@ const markAbsent = async (req , res)=>{
         await attendence.updateOne({empId:empId},
             {
                 $push:{
-                    absent:{date , month , year , leave:false}
+                    absent:{date , month , year , leave:false , marked:true}
                 }
             }
         )
@@ -71,7 +71,7 @@ const markAbsent = async (req , res)=>{
 
 const markLeave = async (req , res)=>{
     try{
-        const {empId , date , month , year} = req.body
+        const {empId , date , month , year , leaveType} = req.body
 
         await attendence.updateOne({empId:empId} , 
             {
@@ -84,7 +84,7 @@ const markLeave = async (req , res)=>{
         await attendence.updateOne({empId:empId} , 
             {
                 $push:{
-                    absent:{date , month , year , leave:true}
+                    absent:{date , month , year , leave:true , leaveType:leaveType}
                 }
             }
         )
@@ -98,9 +98,36 @@ const markLeave = async (req , res)=>{
     }
 }
 
+const markPresent = async(req , res)=>{
+    try{
+        const {date , month , year , empId} = req.body;
+
+        await attendence.updateOne({empId:empId},{
+            $pull:{
+                absent:{date , month , year}
+            },
+        })
+        
+        await attendence.updateOne({empId:empId},{
+            $push:{
+                present:{date , month , year}
+            },
+        })
+        
+
+        return res.json({complete:true})
+    }
+    catch(e)
+    {
+        console.log(e);
+        return res.json({complete:false})
+        
+    }
+}
 module.exports ={
     getPresentEmp,
     getAbsentEmp,
     markAbsent,
-    markLeave
+    markLeave,
+    markPresent
 }

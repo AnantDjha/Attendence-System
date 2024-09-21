@@ -11,6 +11,7 @@ import Employee from './employee/Employee'
 import EmpLogin from './empLogin/EmpLogin'
 import { empContext } from './context/empContext'
 import AttendenceMark from './attendenceMark/AttendenceMark'
+import SetLeaveType from './setLeaveType/SetLeaveType'
 
 function App() {
 
@@ -62,7 +63,7 @@ function App() {
     {
       path:"/attendence-mark/:id",
       element:<><AttendenceMark/><Navbar/></>
-    }
+    },
   ])
   return (
     <>

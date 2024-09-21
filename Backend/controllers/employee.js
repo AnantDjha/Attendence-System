@@ -91,17 +91,23 @@ const fetchDetail = async (req , res)=>{
 const markAttendence = async (req , res)=>{
     try{
         const data = await employeeModle.findOne({empId : req.body.empId});
-       
+        const data2 = await attendence.findOne({empId: req.body.empId})
+        const date = new Date()
+                let day = date.getDate()
+                let month = date.getMonth()
+                let year = date.getFullYear()
+        const marker = data2.absent.find(a => a.date == day && a.month == month+1 && a.year == year)
+        console.log(marker);
+        
         if(!data)
         {
             return res.json({got: false , message:"No Record found"})
         }
+        else if(marker?.marked)
+        {
+            return res.json({got: false , message:"Not Allowed to Make Attendence"})
+        }
         else{
-           
-                const date = new Date()
-                let day = date.getDate()
-                let month = date.getMonth()
-                let year = date.getFullYear()
 
                 const attendenceData = await attendence.findOne(
                     {

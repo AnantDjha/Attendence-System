@@ -14,17 +14,23 @@ export default function Employee() {
     const [month , setMonth] = useState("sep")
     const { admin, setAdmin } = useContext(adminContext);
     const [empDetail, setEmpDetail] = useState({
-        firstName: "Anant",
-        lastName: "Jha",
-        email: "aan@gmail.com",
-        empId: "9028828688"
+        firstName:"Anant",
+        lastName:"Jha",
+        email:"anasd@gmail.com",
+        empId:"9028828688",
+        dayPayout:200
     })
     const [Attendence, setAttendence] = useState({
-        present: [1, 2, 3, 4, 5, 6, 7, 8],
-        absent: [{ leave: true }, { leave: false }, { leave: false }, { leave: true }, { leave: true }, { leave: true }, { leave: false },]
+        firstName:"Anant",
+        lastName:"Jha",
+        email:"anasd@gmail.com",
+        empId:"9028828688",
+        present:[{date:1 , month:9 , year:2024},{date:2 , month:9 , year:2024}],
+        absent:[{date:3 , month:9 , year:2024 , leave:false},{date:4 , month:9 , year:2024 , leave:true , leaveType:"sunday" , holiday:true}],
     })
 
     const [leave , setLeave] = useState(0)
+    const [holidays , setHolidays] = useState(0)
 
     const handleLogout = () => {
         axios.defaults.withCredentials = true
@@ -39,7 +45,8 @@ export default function Employee() {
     const getEmpDetail = ()=>{
         axios.post("http://localhost:5000/detail/personal" , {empId : param.id})
         .then((res)=>{
-            setEmpDetail(res.data.value)
+            if(res.data.completed)
+                setEmpDetail({...res.data.value, dayPayout:200})
         })
         .catch((e)=>{
             alert("something went wrong")
@@ -49,7 +56,8 @@ export default function Employee() {
     const getAttendenceDetail = ()=>{
         axios.post("http://localhost:5000/detail/attendence" , {empId : param.id , month:monthDays[month].value})
         .then((res)=>{
-            setAttendence(res.data.value)
+            if(res.data.completed)
+                setAttendence(res.data.value)
         })
         .catch((e)=>{
             alert("something went wrong")
@@ -59,12 +67,17 @@ export default function Employee() {
     useEffect(()=>{
         getEmpDetail()
     },[])
+
     useEffect(()=>{
         getAttendenceDetail()
     },[month])
 
     useEffect(()=>{
-        setLeave(Attendence.absent.filter(a=> a.leave == true).length)
+        if(Attendence)
+            {
+                setLeave(Attendence.absent.filter(a=> a.leave == true && a.holiday == false).length);
+                setHolidays(Attendence.absent.filter(a=> a.leave == true && a.holiday == true).length);
+            }
     },[Attendence])
 
     return (
@@ -173,6 +186,62 @@ export default function Employee() {
                             <strong>{leave}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
+                </div>
+
+                <div className="bar" style={{ width: 150, height: 150 }}>
+                    <p>Holidays</p>
+
+                    <CircularProgressbarWithChildren
+                        value={(leave* 100 /monthDays[month].days )}
+                        styles={buildStyles({
+                            pathColor: 'blue',
+                            trailColor: '#eee'
+                        })}
+                    >
+                        <div style={{fontSize:"40px",color:"Blue", width:"100%" , textAlign:"center"}}>
+                            <strong>{holidays}</strong>
+                        </div>
+                    </CircularProgressbarWithChildren>
+                </div>
+            </div>
+
+            <div className="payOut">
+                <h3>Payout</h3>
+
+                <div className="calculate-payout">
+                    <div>
+                        <span>
+                            Day payout
+                        </span>
+                        <b>
+                            {empDetail.dayPayout}
+                        </b>
+                    </div>
+                    <div>
+                        <span>
+                            Total Present Payout
+                        </span>
+                        <b>
+                            {Attendence.present.length * empDetail.dayPayout}
+                        </b>
+                    </div>
+                    <div>
+                        <span>
+                            Absent Payout (Excluding Leaves)
+                        </span>
+                        <b>
+                            {(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
+                        </b>
+                    </div>
+                    <div>
+                        <span>
+                            Total Payout 
+                        </span>
+                        <b>
+                            {(Attendence.present.length * empDetail.dayPayout)-(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
+                        </b>
+                    </div>
+                   
                 </div>
             </div>
         </div>

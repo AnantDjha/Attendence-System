@@ -71,6 +71,21 @@
     /* background-color: blue; */
     
 }
+.marker-and-detail{
+    width: 85%;
+    height: 100%;
+    display: flex;
+    /* flex-direction: column; */
+}
+.marker-and-detail .detail{
+    width: 50%;
+}
+.marker-and-detail .marker{
+    width: 50%;
+}
+.marker-and-detail .marker button{
+    margin: 0 0.5rem;
+}
 .detail div span{
     /* width: 7rem; */
     margin-right: 0.4rem;
@@ -122,5 +137,36 @@
     }
     .img{
         width: 18%;
+    }
+}
+
+@media only screen and (max-width:600px)
+{
+    .marker-and-detail{
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    .marker-and-detail .detail {
+        width: fit-content;
+    }
+    .marker-and-detail .marker{
+        width: 100%;
+    }
+
+    .emp-box{
+        height: fit-content;
+        flex-direction: column;
+        align-items: center;
+    }
+    .detail{
+        width: fit-content;
+        text-align: center;
+        /* background-color: #fff; */
+        align-items: center;
+    }
+    .detail div{
+        margin-left: 0;
+        width: fit-content;  
     }
 }
