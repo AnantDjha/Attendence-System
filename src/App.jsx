@@ -32,6 +32,9 @@ function App() {
     .then((res)=>{
       setEmployee(res.data)
     })
+    .catch((e)=>{
+      setEmployee({valid :false})
+    })
   }
 
   useEffect(()=>{

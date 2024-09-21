@@ -59,21 +59,18 @@ export default function AttendenceMark()
         })    }
 
     useEffect(()=>{
-        if(!employee)
+        if(employee && !employee.valid)
         {
-            navigate("/")
-            navigate("/attendence-mark")
-        }
-        else if(!employee.valid){
             navigate("/")
             return
         }
         getEmpDetail()
-    },[])
+    },[employee])
 
     
 
     return (
+        empDetail  && 
         <div className="main-mark">
             <div className="detail-emp">
                 <div className="emp-personal-detail">
