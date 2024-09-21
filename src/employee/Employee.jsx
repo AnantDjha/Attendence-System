@@ -6,13 +6,14 @@ import profile from "../assets/profile.png"
 import { buildStyles, CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import "./Employee.css"
-import { monthDays } from "../monthDays";
+import { monthDays , montIndex} from "../monthDays";
 
 export default function Employee() {
 
     const param = useParams()
-    const [month , setMonth] = useState("sep")
-    const { admin, setAdmin } = useContext(adminContext);
+    const [month , setMonth] = useState(montIndex[new Date().getMonth()])
+    const [date , setDate] = useState(new Date().getDate())
+    const {admin, setAdmin } = useContext(adminContext);
     const [empDetail, setEmpDetail] = useState({
         firstName:"Anant",
         lastName:"Jha",
@@ -238,7 +239,7 @@ export default function Employee() {
                             Total Payout 
                         </span>
                         <b>
-                            {(Attendence.present.length * empDetail.dayPayout)-(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
+                            {(date*empDetail.dayPayout)-(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
                         </b>
                     </div>
                    
