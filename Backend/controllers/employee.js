@@ -97,6 +97,7 @@ const markAttendence = async (req , res)=>{
                 let month = date.getMonth()
                 let year = date.getFullYear()
         const marker = data2.absent.find(a => a.date == day && a.month == month+1 && a.year == year)
+        
         console.log(marker);
         
         if(!data)
@@ -105,7 +106,11 @@ const markAttendence = async (req , res)=>{
         }
         else if(marker?.marked)
         {
-            return res.json({got: false , message:"Not Allowed to Make Attendence"})
+            return res.json({got: false , message:"You are Marked Absent By Admin"})
+        }
+        else if(marker?.markedLeave)
+        {
+            return res.json({got: false , message:"Leave is allocated to you for this day. For changes contact admin"})
         }
         else{
 

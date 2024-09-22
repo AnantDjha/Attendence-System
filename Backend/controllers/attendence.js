@@ -1,133 +1,192 @@
 const attendence = require("../model/attendence")
 
-const getPresentEmp = async (req , res)=>{
-    try{
-        const {date , month , year} = req.body;
+const getPresentEmp = async (req, res) => {
+    try {
+        const { date, month, year } = req.body;
         const attendenceData = await attendence.find({
             present: {
-              $elemMatch: { date, month , year}
+                $elemMatch: { date, month, year }
             }
-          });
+        });
 
-          res.json(attendenceData)
+        res.json(attendenceData)
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
         res.json([])
-        
+
     }
 }
-const getAbsentEmp = async (req , res)=>{
-    try{
-        const {date , month , year} = req.body;
+const getAbsentEmp = async (req, res) => {
+    try {
+        const { date, month, year } = req.body;
         const attendenceData = await attendence.find({
             absent: {
-              $elemMatch: { date, month , year}
+                $elemMatch: { date, month, year }
             }
-          });
+        });
 
-          res.json(attendenceData)
+        res.json(attendenceData)
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
         res.json([])
-        
+
     }
 }
 
-const markAbsent = async (req , res)=>{
-    try{
-        const {date , month , year , empId} = req.body
-        await attendence.updateOne({empId: empId} , {
-            $pull:{
-                present :{date , month , year}
+const markAbsent = async (req, res) => {
+    try {
+        const { date, month, year, empId } = req.body
+        await attendence.updateOne({ empId: empId }, {
+            $pull: {
+                present: { date, month, year }
             },
         })
 
-        await attendence.updateOne({empId: empId} , {
-            $pull:{
-                absent:{date , month , year}
+        await attendence.updateOne({ empId: empId }, {
+            $pull: {
+                absent: { date, month, year }
             },
         })
 
-        await attendence.updateOne({empId:empId},
+        await attendence.updateOne({ empId: empId },
             {
-                $push:{
-                    absent:{date , month , year , leave:false , marked:true}
+                $push: {
+                    absent: { date, month, year, leave: false, marked: true }
                 }
             }
         )
 
-        res.json({complete:true})
+        res.json({ complete: true })
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
-        res.json({complete:false})
+        res.json({ complete: false })
     }
 }
 
-const markLeave = async (req , res)=>{
-    try{
-        const {empId , date , month , year , leaveType} = req.body
+const markLeave = async (req, res) => {
+    try {
+        const { empId, date, month, year, leaveType } = req.body
 
-        await attendence.updateOne({empId:empId} , 
+        if (!empId) {
+            await attendence.updateMany({
+                absent: {
+                    $elemMatch: { date, month, year }
+                }
+            }, {
+                $pull: {
+                    absent: { date, month, year }
+                }
+            })
+
+            await attendence.updateMany({
+                present: { $not: { $elemMatch: { date, month, year } } }
+            },
+                {
+                    $push: {
+                        absent: { date, month, year, leave: true, leaveType, holiday: true, markedLeave: true }
+                    }
+                })
+            return res.json({ complete: true })
+        }
+
+        await attendence.updateOne({ empId: empId },
             {
-                $pull:{
-                    absent:{date , month , year}
+                $pull: {
+                    absent: { date, month, year }
                 }
             }
         )
 
-        await attendence.updateOne({empId:empId} , 
+        await attendence.updateOne({ empId: empId },
             {
-                $push:{
-                    absent:{date , month , year , leave:true , leaveType:leaveType}
+                $push: {
+                    absent: { date, month, year, leave: true, leaveType: leaveType , markedLeave:true}
                 }
             }
         )
 
-        res.json({completed:true})
+        res.json({ completed: true })
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
-        res.json({complete:false})
+        res.json({ complete: false })
     }
 }
 
-const markPresent = async(req , res)=>{
-    try{
-        const {date , month , year , empId} = req.body;
+const markPresent = async (req, res) => {
+    try {
+        const { date, month, year, empId } = req.body;
 
-        await attendence.updateOne({empId:empId},{
-            $pull:{
-                absent:{date , month , year}
+        await attendence.updateOne({ empId: empId }, {
+            $pull: {
+                absent: { date, month, year }
             },
         })
-        
-        await attendence.updateOne({empId:empId},{
-            $push:{
-                present:{date , month , year}
+
+        await attendence.updateOne({ empId: empId }, {
+            $push: {
+                present: { date, month, year }
             },
         })
-        
 
-        return res.json({complete:true})
+
+        return res.json({ complete: true })
     }
-    catch(e)
-    {
+    catch (e) {
         console.log(e);
-        return res.json({complete:false})
-        
+        return res.json({ complete: false })
+
     }
 }
-module.exports ={
+
+const markAbsentForToday = async (req, res) => {
+    try {
+
+        let date = new Date().getDate();
+        let month = new Date().getMonth() + 1;
+        let year = new Date().getFullYear();
+
+        const data = await attendence.findOne({
+            $or: [
+                {
+                    present: {
+                        $elemMatch: { date, month, year }
+                    }
+                },
+                {
+                    absent: {
+                        $elemMatch: { date, month, year }
+                    }
+                }
+            ]
+        })
+
+        if (!data) {
+            await attendence.updateMany({}, {
+                $push: {
+                    absent: { date, month, year, leave: false }
+                }
+            })
+
+            res.json({ completed: true })
+        }
+        else {
+            res.json({ completed: true })
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.json({ completed: false })
+    }
+}
+module.exports = {
     getPresentEmp,
     getAbsentEmp,
     markAbsent,
     markLeave,
-    markPresent
+    markPresent,
+    markAbsentForToday
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState ,useRef} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminContext } from "../context/adminContext";
 import "./Admin.css"
@@ -6,6 +6,7 @@ import Present from "../present/Present";
 import Absent from "../absent/Absent"
 import axios from "axios";
 import { monthDays, montIndex } from "../monthDays";
+import SetLeaveType from "../setLeaveType/SetLeaveType";
 
 
 export default function Admin() {
@@ -18,6 +19,14 @@ export default function Admin() {
     const [date, setDate] = useState(new Date().getDate())
     const [year, setYear] = useState(new Date().getFullYear())
     const [fullDate, setFullDate] = useState("")
+    const [data , setData] = useState([])
+    const leaveRef = useRef(null)
+    const [absentMark, setAbsentMark] = useState(true)
+
+
+    const markLeave1 = () => {
+        leaveRef.current.style.display = "block"
+    }
 
     const setPresentDate = (e) => {
         // console.log(e.target.value);  
@@ -33,6 +42,11 @@ export default function Admin() {
             .then((res) => {
                 setAdmin({ valid: false })
                 navigate("/login")
+                console.log("logged out");
+                
+            })
+            .catch((e)=>{
+                alert("something went wrong")
             })
     }
 
@@ -92,21 +106,35 @@ export default function Admin() {
         if (!admin) {
             navigate("/")
             navigate("/admin-page")
-            if (!admin.valid) {
-                navigate("/login")
-            }
+
+        }
+        if (admin && !admin.valid) {
+            navigate("/login")
         }
 
         let mm = month < 10 ? "0"+month : ""+month
         let dd = date < 10 ? "0"+date : ""+date
         
         setFullDate(year+"-"+mm+"-"+dd)
-    }, [date , month , year])
+    }, [date , month , year , admin])
 
     useEffect(() => {
-        console.log(sorter);
+        axios.defaults.withCredentials = true
+        axios.post("http://localhost:5000/attendence/absent", { date, month, year })
+            .then((res) => {
+                setData(res.data)
+            })
+            .catch((e) => {
+                alert("something went wrong")
+            })
+    }, [date, month, year,absentMark])
 
-    }, [sorter])
+    useEffect(() => {
+        if (leaveRef) {
+            leaveRef.current.style.display = "none"
+        }
+    }, [])
+
     return (
         <div className="main-admin">
             <div className="greeting">
@@ -129,26 +157,41 @@ export default function Admin() {
                         <span>Date:</span>
                         <input type="date" value={fullDate} onChange={setPresentDate} />
                     </div>
+                   
+                </div>
+
+                <div className="mark-as-holiday buttonAndSort">
+                    
                     <div className="increaserAndDecreaser">
                         <button
                             onClick={handleDecreaseDate}
-                        >
+                            >
                             {"<"}
                         </button>
-                        <button
+                        
+                    </div>
+                            <button onClick={markLeave1}>{data.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.holiday)?.length >0
+                                ? "Unmark Holiday" : "Mark Holiday"}</button>
+                    <div className="increaserAndDecreaser">
+                    <button
                             onClick={handleIncreaseDate}
                         >
                             {">"}
                         </button>
+                        
                     </div>
                 </div>
                 <div>
                     {
                         present ? <Present month={month} date={date} year={year} />
-                            : <Absent month={month} date={date} year={year} />
+                            : <Absent month={month} date={date} year={year} data = {data.length > 0 && data} setAbsentMark={setAbsentMark} absentMark={absentMark}/>
                     }
                 </div>
             </div>
+            <div ref={leaveRef}>
+            
+            <SetLeaveType leaveRef={leaveRef} date={date} month={month} year={year} employeeId={null} setAbsentMark={setAbsentMark} absentMark={absentMark}/>
+         </div>
         </div>
     )
 }

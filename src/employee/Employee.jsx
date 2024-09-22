@@ -1,37 +1,38 @@
 import { Profiler, useContext, useEffect, useState } from "react"
 import { adminContext } from "../context/adminContext";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import profile from "../assets/profile.png"
 import { buildStyles, CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import "./Employee.css"
-import { monthDays , montIndex} from "../monthDays";
+import { monthDays, montIndex } from "../monthDays";
 
 export default function Employee() {
 
+    const navigate = useNavigate()
     const param = useParams()
-    const [month , setMonth] = useState(montIndex[new Date().getMonth()])
-    const [date , setDate] = useState(new Date().getDate())
-    const {admin, setAdmin } = useContext(adminContext);
+    const [month, setMonth] = useState(montIndex[new Date().getMonth()])
+    const [date, setDate] = useState(new Date().getDate())
+    const { admin, setAdmin } = useContext(adminContext);
     const [empDetail, setEmpDetail] = useState({
-        firstName:"Anant",
-        lastName:"Jha",
-        email:"anasd@gmail.com",
-        empId:"9028828688",
-        dayPayout:200
+        firstName: "Anant",
+        lastName: "Jha",
+        email: "anasd@gmail.com",
+        empId: "9028828688",
+        dayPayout: 200
     })
     const [Attendence, setAttendence] = useState({
-        firstName:"Anant",
-        lastName:"Jha",
-        email:"anasd@gmail.com",
-        empId:"9028828688",
-        present:[{date:1 , month:9 , year:2024},{date:2 , month:9 , year:2024}],
-        absent:[{date:3 , month:9 , year:2024 , leave:false},{date:4 , month:9 , year:2024 , leave:true , leaveType:"sunday" , holiday:true}],
+        firstName: "Anant",
+        lastName: "Jha",
+        email: "anasd@gmail.com",
+        empId: "9028828688",
+        present: [{ date: 1, month: 9, year: 2024 }, { date: 2, month: 9, year: 2024 }],
+        absent: [{ date: 3, month: 9, year: 2024, leave: false }, { date: 4, month: 9, year: 2024, leave: true, leaveType: "sunday", holiday: true }],
     })
 
-    const [leave , setLeave] = useState(0)
-    const [holidays , setHolidays] = useState(0)
+    const [leave, setLeave] = useState(0)
+    const [holidays, setHolidays] = useState(0)
 
     const handleLogout = () => {
         axios.defaults.withCredentials = true
@@ -43,43 +44,51 @@ export default function Employee() {
     }
 
     //getting deatil of emp
-    const getEmpDetail = ()=>{
-        axios.post("http://localhost:5000/detail/personal" , {empId : param.id})
-        .then((res)=>{
-            if(res.data.completed)
-                setEmpDetail({...res.data.value, dayPayout:200})
-        })
-        .catch((e)=>{
-            alert("something went wrong")
-        })
+    const getEmpDetail = () => {
+        axios.post("http://localhost:5000/detail/personal", { empId: param.id })
+            .then((res) => {
+                if (res.data.completed)
+                    setEmpDetail({ ...res.data.value, dayPayout: 200 })
+            })
+            .catch((e) => {
+                alert("something went wrong")
+            })
     }
 
-    const getAttendenceDetail = ()=>{
-        axios.post("http://localhost:5000/detail/attendence" , {empId : param.id , month:monthDays[month].value})
-        .then((res)=>{
-            if(res.data.completed)
-                setAttendence(res.data.value)
-        })
-        .catch((e)=>{
-            alert("something went wrong")
-        })
+    const getAttendenceDetail = () => {
+        axios.post("http://localhost:5000/detail/attendence", { empId: param.id, month: monthDays[month].value })
+            .then((res) => {
+                if (res.data.completed)
+                    setAttendence(res.data.value)
+            })
+            .catch((e) => {
+                alert("something went wrong")
+            })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
+        if(!admin)
+        {
+            navigate("/")
+            navigate(-1);
+        }
+        if(admin && !admin.valid)
+        {
+            navigate("/login")
+        }
         getEmpDetail()
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         getAttendenceDetail()
-    },[month])
+    }, [month])
 
-    useEffect(()=>{
-        if(Attendence)
-            {
-                setLeave(Attendence.absent.filter(a=> a.leave == true && a.holiday == false).length);
-                setHolidays(Attendence.absent.filter(a=> a.leave == true && a.holiday == true).length);
-            }
-    },[Attendence])
+    useEffect(() => {
+        if (Attendence) {
+            setLeave(Attendence.absent.filter(a => a.leave == true && a.holiday == false).length);
+            setHolidays(Attendence.absent.filter(a => a.leave == true && a.holiday == true).length);
+        }
+    }, [Attendence])
 
     return (
         (empDetail && Attendence) &&
@@ -108,22 +117,22 @@ export default function Employee() {
                 <p>Attendence Progress</p>
                 <div>
                     <span>Month:</span>
-                <select value={month} onChange={(e)=> setMonth(e.target.value)}>
-                    <option value="jan">Jan</option>
-                    <option value="feb">Feb</option>
-                    <option value="mar">Mar</option>
-                    <option value="apr">Apr</option>
-                    <option value="may">May</option>
-                    <option value="jun">Jun</option>
-                    <option value="jul">Jul</option>
-                    <option value="aug">Aug</option>
-                    <option value="sep">Sep</option>
-                    <option value="oct">Oct</option>
-                    <option value="nov">Nov</option>
-                    <option value="dec">Dec</option>
-                </select>
+                    <select value={month} onChange={(e) => setMonth(e.target.value)}>
+                        <option value="jan">Jan</option>
+                        <option value="feb">Feb</option>
+                        <option value="mar">Mar</option>
+                        <option value="apr">Apr</option>
+                        <option value="may">May</option>
+                        <option value="jun">Jun</option>
+                        <option value="jul">Jul</option>
+                        <option value="aug">Aug</option>
+                        <option value="sep">Sep</option>
+                        <option value="oct">Oct</option>
+                        <option value="nov">Nov</option>
+                        <option value="dec">Dec</option>
+                    </select>
                 </div>
-                
+
             </div>
 
             <div className="tracker">
@@ -136,7 +145,7 @@ export default function Employee() {
                             trailColor: '#eee'
                         })}
                     >
-                        <div style={{fontSize:"40px",color:"yellow", width:"100%" , textAlign:"center"}}>
+                        <div style={{ fontSize: "40px", color: "yellow", width: "100%", textAlign: "center" }}>
                             <strong>{monthDays[month].days}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
@@ -147,13 +156,13 @@ export default function Employee() {
                     <p>Presnt</p>
 
                     <CircularProgressbarWithChildren
-                        value={(Attendence.present.length * 100 /monthDays[month].days )}
+                        value={(Attendence.present.length * 100 / monthDays[month].days)}
                         styles={buildStyles({
                             pathColor: 'green',
                             trailColor: '#eee'
                         })}
                     >
-                        <div style={{fontSize:"40px",color:"green", width:"100%" , textAlign:"center"}}>
+                        <div style={{ fontSize: "40px", color: "green", width: "100%", textAlign: "center" }}>
                             <strong>{Attendence.present.length}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
@@ -162,13 +171,13 @@ export default function Employee() {
                     <p>Absent</p>
 
                     <CircularProgressbarWithChildren
-                        value={(Attendence.absent.length * 100 /monthDays[month].days )}
+                        value={(Attendence.absent.length * 100 / monthDays[month].days)}
                         styles={buildStyles({
                             pathColor: 'red',
                             trailColor: '#eee'
                         })}
                     >
-                        <div style={{fontSize:"40px",color:"red", width:"100%" , textAlign:"center"}}>
+                        <div style={{ fontSize: "40px", color: "red", width: "100%", textAlign: "center" }}>
                             <strong>{Attendence.absent.length}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
@@ -177,13 +186,13 @@ export default function Employee() {
                     <p>On Leave</p>
 
                     <CircularProgressbarWithChildren
-                        value={(leave* 100 /monthDays[month].days )}
+                        value={(leave * 100 / monthDays[month].days)}
                         styles={buildStyles({
                             pathColor: 'blue',
                             trailColor: '#eee'
                         })}
                     >
-                        <div style={{fontSize:"40px",color:"Blue", width:"100%" , textAlign:"center"}}>
+                        <div style={{ fontSize: "40px", color: "Blue", width: "100%", textAlign: "center" }}>
                             <strong>{leave}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
@@ -193,13 +202,13 @@ export default function Employee() {
                     <p>Holidays</p>
 
                     <CircularProgressbarWithChildren
-                        value={(leave* 100 /monthDays[month].days )}
+                        value={(leave * 100 / monthDays[month].days)}
                         styles={buildStyles({
                             pathColor: 'blue',
                             trailColor: '#eee'
                         })}
                     >
-                        <div style={{fontSize:"40px",color:"Blue", width:"100%" , textAlign:"center"}}>
+                        <div style={{ fontSize: "40px", color: "Blue", width: "100%", textAlign: "center" }}>
                             <strong>{holidays}</strong>
                         </div>
                     </CircularProgressbarWithChildren>
@@ -215,34 +224,34 @@ export default function Employee() {
                             Day payout
                         </span>
                         <b>
-                            {empDetail.dayPayout}
+                            ₹{empDetail.dayPayout}
                         </b>
                     </div>
                     <div>
                         <span>
-                            Total Present Payout
+                            Present Payout (Till Date)
                         </span>
                         <b>
-                            {Attendence.present.length * empDetail.dayPayout}
+                            ₹{Attendence.present.length * empDetail.dayPayout}
                         </b>
                     </div>
                     <div>
                         <span>
-                            Absent Payout (Excluding Leaves)
+                            Payout Cut (Absent)
                         </span>
-                        <b>
-                            {(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
+                        <b style={{ color: "red" }}>
+                            - ₹{(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
                         </b>
                     </div>
                     <div>
                         <span>
-                            Total Payout 
+                            Total Payout
                         </span>
-                        <b>
-                            {(date*empDetail.dayPayout)-(Attendence.absent.length - holidays - (leave < 2 ? leave : leave - 2)) * empDetail.dayPayout}
+                        <b style={{color:"green"}}>
+                            ₹{(Attendence.present.length + holidays + (leave < 2 ? leave : 2)) * empDetail.dayPayout}
                         </b>
                     </div>
-                   
+
                 </div>
             </div>
         </div>

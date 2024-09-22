@@ -1,3 +1,11 @@
+.main-employee{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 .detail-emp{
     width: 60rem;
     margin: 1rem auto;
@@ -159,6 +167,9 @@
     }
     .payOut{
         width: 95%;
+    }
+    .main-employee{
+        height: fit-content;
     }
 }
 @media only screen and (max-width:626px)

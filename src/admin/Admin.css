@@ -67,27 +67,13 @@
     transform: scale(0.9);
 
 }
-.increaserAndDecreaser button{
-    padding: 0.2rem 1rem;
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    background-color: black;
-    border: none;
-    outline: none;
-    margin: 0 0.4rem;
-    border-radius: 5px;
-    transition-duration: 0.2s;
-}
-.increaserAndDecreaser button:active{
-    transform: scale(0.9);
-}
+
 .sorter{
     display: flex;
     width: 10rem;
     align-items: center;
     /* background-color: blue; */
-    width: 13rem;
+    /* width: 13rem; */
 }
 .sorter span{
     font-size: 17px;
@@ -99,6 +85,43 @@
     border: 2px solid black;
     padding: 0.4rem 0;
     border-radius: 5px;
+}
+.mark-as-holiday{
+    margin: 0.3rem 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.mark-as-holiday button{
+    margin-left: 0.3rem;
+    padding: 0.3rem 1rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: blueviolet;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+.mark-as-holiday button:active{
+    transform: scale(0.9);
+}
+
+.increaserAndDecreaser button{
+    /* padding: 0.1rem 1rem; */
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    border: none;
+    outline: none;
+    margin: 0 0.4rem;
+    border-radius: 5px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+.increaserAndDecreaser button:active{
+    transform: scale(0.9);
 }
 
 @media only screen and (max-width:1000px)
@@ -125,15 +148,4 @@
         margin: 0 0.2rem;
     }
   
-}
-@media only screen and (max-width:672px)
-{
-   .increaserAndDecreaser{
-    width: 100%;
-    /* background-color: red; */
-    display: flex;
-    justify-content: center;
-    margin-top: 0.8rem;
-   }
-   
 }

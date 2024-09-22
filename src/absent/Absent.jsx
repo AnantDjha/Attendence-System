@@ -3,11 +3,12 @@ import { useEffect, useRef, useState } from "react"
 import "../present/Present.css"
 import profile from "../assets/profile.png"
 import { useNavigate } from "react-router-dom"
+import SetLeaveType from "../setLeaveType/SetLeaveType"
 
-export default function Present({ month, date, year }) {
+export default function Present({ month, date, year , data , absentMark , setAbsentMark}) {
     const navigate = useNavigate()
-    const [data, setData] = useState([])
-    const [absentMark, setAbsentMark] = useState(true)
+    // const [data, setData] = useState([])
+    // const [absentMark, setAbsentMark] = useState(true)
     const leaveRef = useRef(null)
     const [employeeId, setEmployeeId] = useState("")
     const [leaveType, setLeaveType] = useState("") // Added state for leaveType
@@ -19,7 +20,7 @@ export default function Present({ month, date, year }) {
                 setAbsentMark(!absentMark)
             })
             .catch((e) => {
-                alert("something went wrong")
+                alert("something went wrong"+ e)
             })
     }
 
@@ -33,7 +34,7 @@ export default function Present({ month, date, year }) {
         axios.post("http://localhost:5000/attendence/mark-leave", { date, month, year, empId: employeeId, leaveType })
             .then((res) => {
                 leaveRef.current.style.display = "none"
-                setAbsentMark(false)
+                setAbsentMark(!absentMark)
             })
             .catch((e) => {
                 alert("something went wrong: " + e)
@@ -52,16 +53,16 @@ export default function Present({ month, date, year }) {
         })
     }
 
-    useEffect(() => {
-        axios.defaults.withCredentials = true
-        axios.post("http://localhost:5000/attendence/absent", { date, month, year })
-            .then((res) => {
-                setData(res.data)
-            })
-            .catch((e) => {
-                alert("something went wrong")
-            })
-    }, [date, month, year, absentMark])
+    // useEffect(() => {
+    //     axios.defaults.withCredentials = true
+    //     axios.post("http://localhost:5000/attendence/absent", { date, month, year })
+    //         .then((res) => {
+    //             setData(res.data)
+    //         })
+    //         .catch((e) => {
+    //             alert("something went wrong")
+    //         })
+    // }, [date, month, year, absentMark])
 
     useEffect(() => {
         if (leaveRef) {
@@ -135,16 +136,8 @@ export default function Present({ month, date, year }) {
                     </div>
             }
             <div ref={leaveRef}>
-                <div className="main-leave-type">
-                    <div className="input-value">
-                        <p>Enter Leave Type</p>
-                        <input type="text" value={leaveType} onChange={(e) => setLeaveType(e.target.value)} /> {/* Corrected leaveType and setLeaveType */}
-                        <div className="btn-leave">
-                            <button onClick={() => {leaveRef.current.style.display = "none"}}>Back</button> {/* Corrected Back button */}
-                            <button onClick={markLeave2}>Submit</button>
-                        </div>
-                    </div>
-                </div>
+            
+               <SetLeaveType leaveRef={leaveRef} date={date} month={month} year={year} employeeId={employeeId} setAbsentMark={setAbsentMark} absentMark={absentMark}/>
             </div>
         </div>
     )
