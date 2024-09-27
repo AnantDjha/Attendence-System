@@ -1,0 +1,158 @@
+.main-noti h3{
+    width: 60rem;
+    margin:1rem auto;
+    font-size: 22px;
+}
+
+.switch-btns{
+    width: 60rem;
+    margin: auto;
+    margin-bottom: 1rem;
+    background-color: white;
+    padding: 1rem 0;
+    border-radius: 5px;
+}
+
+.res-g{
+    background-color: green;
+    color: #fff;
+    width: 60rem;
+    padding: 0.5rem 0;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 0.5rem;
+
+}
+.res-r{
+    background-color: red;
+    color: #fff;
+    width: 60rem;
+    padding: 0.5rem 0;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+.switch-btns button{
+    border: none;
+    outline: none;
+    margin-left: 0.9rem;
+    background-color: transparent;
+    font-size: 15px;
+    padding: 0.3rem 0;
+    cursor: pointer;
+}
+
+.switch-btns button:disabled{
+    border-bottom: 2px solid gray;
+    /* color: black; */
+    border-radius: 5px;
+    color: darkgray;
+}
+
+.message-box{
+    width: 60rem;
+    margin: auto;
+}
+
+.message-box-slap{
+    width: 100%;
+    background-color: #fff;
+    margin: 0.3rem 0;
+    overflow: hidden;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 0.6rem 0;
+    /* position: relative; */
+}
+.photo-name-btn{
+    display: flex;
+    justify-content: space-between;    
+    /* padding: 0.6rem 0; */
+    align-items: center;
+    width: 95%;
+    /* margin: auto; */
+    position: relative;
+
+
+}
+.photo-name {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.photo-name img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+    /* align-items: center; */
+}
+
+.subject{
+    width: 95%;
+    margin-bottom: 0.6rem;
+    font-size: 18px;
+}
+.subject span:nth-child(1)
+{
+    font-weight: bold;
+}
+.date-init {
+    width: 95%;
+    margin-bottom: 0.5rem;
+    font-size: 18px
+}
+.date-init span:nth-child(1)
+{
+    font-weight: bold;
+}
+
+.content{
+    width: 95%;
+    margin-top: 0.5rem;
+    background-color: rgb(206, 204, 204);
+    padding: 0.3rem;
+    border-radius: 5px;
+}
+.content p{
+    width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 18px;
+    margin-top: 0.6rem;
+}
+.content span{
+    font-size: 18px;
+    font-weight: bold;
+}
+.r-a-btn{
+    margin-top: 0.5rem;
+}
+
+.r-a-btn button{
+    padding: 0.3rem 0;
+    width: 8rem;
+    background-color: black;
+    margin-right: 0.5rem;
+    color: #fff;
+    border-radius: 5px;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.r-a-btn button:active{
+    transform: scale(0.9);
+}
+
+.type-and-date{
+    width: 95%;
+    margin:1rem 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+
+
+    

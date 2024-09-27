@@ -12,6 +12,8 @@ import EmpLogin from './empLogin/EmpLogin'
 import { empContext } from './context/empContext'
 import AttendenceMark from './attendenceMark/AttendenceMark'
 import SetLeaveType from './setLeaveType/SetLeaveType'
+import EmployeeQuerry from './employeequerry/EmployeeQuerry'
+import Notification from './notification/Notification'
 
 function App() {
 
@@ -30,6 +32,9 @@ function App() {
     axios.get("http://localhost:5000/admin")
     .then((res)=>{
       setAdmin(res.data)
+    })
+    .catch((e)=>{
+      setAdmin({valid:false})
     })
   }
   const getEmployee = ()=>{
@@ -81,6 +86,14 @@ function App() {
     {
       path:"/attendence-mark/:id",
       element:<><AttendenceMark/><Navbar/></>
+    },
+    {
+      path:"/querry-page/:id",
+      element:<><EmployeeQuerry/></>
+    },
+    {
+      path:"/admin-page/notification",
+      element:<><Notification/></>
     },
   ])
   return (

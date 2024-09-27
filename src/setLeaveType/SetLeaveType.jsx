@@ -27,22 +27,19 @@ export default function SetLeaveType({ date, month, year, employeeId, setAbsentM
             })
     }
 
-    useEffect(()=>{
-       
-        console.log(date) 
-        console.log(month) 
-        console.log(year) 
-        console.log(employeeId) 
-        console.log(leaveRef?.current) 
-
-    },[])
+   
     return (
         <div className="main-leave-type">
             <div className="input-value">
                 <p>Enter Leave Type</p>
                 <input type="text" value={leaveType} onChange={(e) => setType(e.target.value)} />
                 <div className="btn-leave">
-                    <button onClick={() => navigate(-1)}>Back</button>
+                    <button onClick={() => {
+                        if(leaveRef.current)
+                        {
+                            leaveRef.current.style.display = "none"
+                        }
+                    }}>Back</button>
                     <button onClick={markLeave2}>Submit</button>
                 </div>
             </div>

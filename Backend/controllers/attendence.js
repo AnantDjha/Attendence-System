@@ -103,7 +103,7 @@ const markLeave = async (req, res) => {
         await attendence.updateOne({ empId: empId },
             {
                 $push: {
-                    absent: { date, month, year, leave: true, leaveType: leaveType , markedLeave:true}
+                    absent: { date, month, year, leave: true, leaveType: leaveType, markedLeave: true, holiday: false }
                 }
             }
         )
@@ -150,32 +150,34 @@ const markAbsentForToday = async (req, res) => {
         let year = new Date().getFullYear();
 
         const data = await attendence.findOne({
-            $or: [
-                {
-                    present: {
-                        $elemMatch: { date, month, year }
-                    }
-                },
-                {
-                    absent: {
-                        $elemMatch: { date, month, year }
-                    }
-                }
-            ]
+            absent: {
+                $not: { $elemMatch: { date, month, year } }
+            },
+            present:{
+                $not: { $elemMatch: { date, month, year } }
+            }
         })
 
-        if (!data) {
-            await attendence.updateMany({}, {
+        if(data)
+        {
+            console.log(".......")
+            await attendence.updateMany({
+                absent: {
+                    $not: { $elemMatch: { date, month, year } }
+                },
+                present:{
+                    $not: { $elemMatch: { date, month, year } }
+                }
+            }, {
                 $push: {
                     absent: { date, month, year, leave: false }
                 }
             })
 
-            res.json({ completed: true })
+           return  res.json({ completed: true })  
         }
-        else {
-            res.json({ completed: true })
-        }
+
+        return res.json({completed: false})
     }
     catch (e) {
         console.log(e);

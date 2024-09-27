@@ -48,6 +48,8 @@ export default function EmpLogin() {
         .then((res)=>{
             if(res.data.got)
             {
+                console.log(res.data.value);
+                
                 setActual(res.data.value)
             }
             setOtpObj(res.data)

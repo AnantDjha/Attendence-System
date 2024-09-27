@@ -65,6 +65,8 @@ export default function Present({ month, date, year , data , absentMark , setAbs
     // }, [date, month, year, absentMark])
 
     useEffect(() => {
+        console.log(data);
+        
         if (leaveRef) {
             leaveRef.current.style.display = "none"
         }
@@ -84,7 +86,7 @@ export default function Present({ month, date, year , data , absentMark , setAbs
                                     No Absent Employee
                                 </div>
 
-                                : data.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == false)
+                                : data?.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == false)
                                     .map((item, i) => {
                                         return (
                                             <div className="emp-box bg-red" key={i}>
@@ -109,12 +111,12 @@ export default function Present({ month, date, year , data , absentMark , setAbs
 
                         <h5 className="absemt-emp-h3">On leave</h5>
                         {
-                            data.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == true).length == 0 ?
+                            data?.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == true).length == 0 ?
                                 <div className="no-emp">
                                     No one on Leave
                                 </div>
 
-                                : data.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == true)
+                                : data?.filter(a => a.absent.find(b => b.date == date && b.year == year && b.month == month)?.leave == true)
                                     .map((item, i) => {
                                         return (
                                             <div className="emp-box bg-green" key={i}>

@@ -32,6 +32,13 @@ app.use(session({
 
 
 const conn = mongoose.connect(process.env.MONGO_URL)
+.then((res)=>{
+  console.log(res);
+  
+})
+
+
+
 
 //route of api request
 const empRoute = require("./routes/employee")
@@ -39,6 +46,8 @@ const adminRoute = require ("./routes/admin");
 const attendenceRoute = require("./routes/attendence")
 const detailRoute = require("./routes/detail")
 const empLogin = require("./routes/empLogin")
+const employeeQuerryRoute = require("./routes/employeeQuerry")
+
 
 //making request
 app.use("/employee" , empRoute);
@@ -46,6 +55,7 @@ app.use("/admin" , adminRoute);
 app.use("/attendence" , attendenceRoute)
 app.use("/detail" , detailRoute)
 app.use("/emp-login" , empLogin)
+app.use("/emp-querry" , employeeQuerryRoute)
 
 
 const transporter = nodemailer.createTransport({
