@@ -53,10 +53,11 @@ export default function EmpLogin() {
                 setActual(res.data.value)
             }
             setOtpObj(res.data)
+            console.log(res.data.message)
         })
         .catch((e)=>{
             console.log(e);
-            
+            setOtpObj({got:false , message:"Please Try again later"})
         })
     }
 

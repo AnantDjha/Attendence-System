@@ -12,7 +12,7 @@ export default function LeaveApplication({ messageData, reRenderer, setReRendere
 
     const reject = (empId, dateStr) => {
         axios.defaults.withCredentials = true;
-        axios.post("http://localhost:5000/emp-querry/reject", { empId, dateStr })
+        axios.post("http://localhost:5000/emp-querry/reject", { empId, dateStr , del :false })
             .then((res) => {
                 setResultMessage(res.data)
                 setTimeout(() => {

@@ -7,18 +7,17 @@ const sendMail = require("../email/emial");
 
 const addQuerry = async (req, res) => {
     try {
-        const { empId, describe, subject, leave , leaveType } = req.body;
+        const { empId, describe, subject, leave, leaveType } = req.body;
         const user = await employeeModle.findOne({ empId: empId });
         const d = new Date();
-        const haveQuerry = await employeeQuerries.findOne({empId:empId});
+        const haveQuerry = await employeeQuerries.findOne({ empId: empId });
 
 
         if (!user) {
             return res.json({ completed: false, message: "Something went wrong" })
         }
-        if(haveQuerry)
-        {
-            return res({completed:false, message:"You have already a open application"})
+        if (haveQuerry) {
+            return res({ completed: false, message: "You have already a open application" })
         }
 
         if (leave) {
@@ -100,12 +99,12 @@ const acceptLeaveChange = async (req, res) => {
                 }, { returnDocument: 'before' })
 
                 console.log(prevData);
-                
+
                 await sendMail(personalData.email, "The Querry Regarding the Attendence failure is Accepted",
-                    `We got Your concern\n\n${prevData?.heading}\n\n${prevData?.content}\n\nYour concern is accepted and Successfully marked Present for date ${new Date(prevData?.initalizeOn).toLocaleDateString()}`
+                    `We got Your concern\n\n${prevData?.heading}\n\n${prevData?.content}\n\nYour concern is accepted and Successfully marked Present for date ${dateStr}`
                 )
 
-              
+
                 return res.json({ completed: true, message: "Attendence Marked Successfully" })
             }
 
@@ -119,11 +118,17 @@ const acceptLeaveChange = async (req, res) => {
     }
 }
 
-const reject = async (req , res)=>{
-    try
-    {
-        const { empId, dateStr } = req.body
-        
+const reject = async (req, res) => {
+    try {
+        const { empId, dateStr, del } = req.body
+
+        if (del) {
+            await employeeQuerries.findOneAndDelete({
+                empId: empId, initalizeOn: new Date(dateStr)
+            }, { returnDocument: 'before' })
+            return res.json({ complted: true, message: "Notification Removed" })
+        }
+
         const personalData = await employeeModle.findOne({ empId: empId })
 
         const prevData = await employeeQuerries.findOneAndDelete({
@@ -133,49 +138,45 @@ const reject = async (req , res)=>{
         await sendMail(personalData.email, "The application is rejected",
             `We got Your concern\n\n${prevData?.heading}\n\n${prevData?.content}\n\nYour concern is rejected for date ${new Date(prevData?.initalizeOn).toLocaleDateString()} due to some issue for further information contact admin.`
         )
-        res.json({completed:true, message:"Application Rejected"})
+        res.json({ completed: true, message: "Application Rejected" })
     }
-    catch(e)
-    {
-        return res.json({completed:false , message:"something went wrong"})
+    catch (e) {
+        return res.json({ completed: false, message: "something went wrong" })
     }
 }
 
-const accecptLeaveApplication = async (req , res)=>{
-    try{
-        const { empId, dateStr , leaveDate , leaveType} = req.body
+const accecptLeaveApplication = async (req, res) => {
+    try {
+        const { empId, dateStr, leaveDate, leaveType } = req.body
         const [year, month, date] = leaveDate.split("-");
         const data = await attendence.findOne({ empId: empId })
         const personalData = await employeeModle.findOne({ empId: empId })
 
-        if(!data)
-        {
-            return res.json({complted :false , message : "something went wrong"})
+        if (!data) {
+            return res.json({ complted: false, message: "something went wrong" })
         }
 
-        const result = await attendence.updateOne({empId:empId} , {
-            $push:{
-                absent:{date:parseInt(date) , month:parseInt(month) , year:parseInt(year) , leave:true , holiday:false , leaveType:leaveType }
+        const result = await attendence.updateOne({ empId: empId }, {
+            $push: {
+                absent: { date: parseInt(date), month: parseInt(month), year: parseInt(year), leave: true, holiday: false, leaveType: leaveType }
             }
         })
-        
-        if(result.acknowledged)
-        {
+
+        if (result.acknowledged) {
             const prevData = await employeeQuerries.findOneAndDelete({
                 empId: empId, initalizeOn: new Date(dateStr), heading: "Apply for Leave"
             }, { returnDocument: 'before' })
 
             await sendMail(personalData.email, "Application for leave",
-                `We got Your Leave Application\n\n${prevData?.heading}\n\n${prevData?.content}\n\nYour Application is Accepted and  leave is allocated to you for date ${new Date(prevData?.leaveDate).toLocaleDateString()}`
+                `We got Your Leave Application\n\n${prevData?.heading}\n\n${prevData?.content}\n\nYour Application is Accepted and  leave is allocated to you for date ${leaveDate}`
             )
 
-            return res.json({completed:true, message:"Leave Allocated"})
+            return res.json({ completed: true, message: "Leave Allocated" })
         }
-        res.json({complted:false , message :"something went wrong"})
+        res.json({ complted: false, message: "something went wrong" })
     }
-    catch(e)
-    {
-        return res.json({completed:false , message:"something went wrong"})
+    catch (e) {
+        return res.json({ completed: false, message: "something went wrong" })
     }
 }
 

@@ -64,16 +64,14 @@ export default function Message({ messageData, reRenderer, setReRenderer }) {
                                 {
                                     visible == i &&
                                     <>
-                                        {item.heading != "Other" &&
+                                        {item.heading != "Other" ?
                                             <div className="r-a-btn">
                                                 <button onClick={()=> reject(item.empId, item.initalizeOn.split("T")[0])}>Reject</button>
-                                                {
-                                                    item.heading == "Having trouble with Attendence - Marked Leave" ?
-                                                        <button onClick={() => { approveLeave(item.empId, item.initalizeOn.split("T")[0]) }}>Approve</button>
-                                                        :
-                                                        <button onClick={() => { approveLeave(item.empId, item.initalizeOn.split("T")[0]) }}>Approve2</button>
-
-                                                }
+                                                <button onClick={() => { approveLeave(item.empId, item.initalizeOn.split("T")[0]) }}>Approve</button>
+                                            </div>
+                                            :
+                                            <div>
+                                                <button onClick={()=> reject("" , "")}>Reject</button>
                                             </div>
                                         }
                                         <div className="content">

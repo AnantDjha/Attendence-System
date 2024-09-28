@@ -33,7 +33,7 @@ app.use(session({
 
 const conn = mongoose.connect(process.env.MONGO_URL)
 .then((res)=>{
-  console.log(res);
+  console.log("connected to database");
   
 })
 
@@ -59,41 +59,55 @@ app.use("/emp-querry" , employeeQuerryRoute)
 
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // or use other email services like Outlook, Yahoo, etc.
+    service: 'gmail',  //or use other email services like Outlook, Yahoo, etc.
+    // host:"smtp.gmail.com",
+    port: 465,
+    secure:true,
     auth: {
       user: 'aayushjha0112@gmail.com',
+      // pass: 'vaib jhcd sqvk zulm',
       pass: 'wnxg clqz spmu geud',
     },
+    tls: {
+      rejectUnauthorized: false,
+    },
+    debug: true, // Enable debug output
+    logger: true,
   });
 
   app.post('/otp', async (req, res) => {
-    
-    const { email} = req.body;
+    try{
+      const { email} = req.body;
 
-    const data = await employeeModel.findOne({email:email})
-
-    if(!data)
-    {
-        return res.json({got:false , value:"" , message:"No Employee Found"})
-    }
-    const value = Math.floor(Math.random() * (1000000 - 100000)) + 100000;
-
-    const mailOptions = {
-      from: 'aayushjha0112@gmail.com',
-      to: email, // Recipient's email
-      subject: "Verification Code", // Email subject
-      text: "code:"+value, // Email message
-    };
+      const data = await employeeModel.findOne({email:email})
   
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        
-        return res.status(500).json({got:false , value:"" , message:"Something went wrong" , error:error})
-      } else {
-        return res.status(200).json({got:true , value:""+value , message:"OTP send Successfully"})
+      if(!data)
+      {
+          return res.json({got:false , value:"" , message:"No Employee Found"})
       }
-    });
+      const value = Math.floor(Math.random() * (1000000 - 100000)) + 100000;
+  
+      const mailOptions = {
+        from: 'aayushjha0112@gmail.com',
+        to: email, // Recipient's email
+        subject: "Verification Code", // Email subject
+        text: "code:"+value, // Email message
+      };
+    
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          
+          return res.status(500).json({got:false , value:"" , message:"Something went wrong" , error:error})
+        } else {
+          return res.status(200).json({got:true , value:""+value , message:"OTP send Successfully"})
+        }
+      });
+    }
+    catch(e)
+    {
+      res.json({got:false , message:"Please Try again later" ,value:""})
+    }
   });
 
 app.listen(process.env.PORT , ()=>{

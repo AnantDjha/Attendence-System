@@ -154,5 +154,24 @@
     font-size: 18px;
 }
 
+@media only screen and (max-width:1000px)
+{
+    .main-noti h3{
+        width: 95%;
+    }
+
+    .switch-btns{
+        width: 95%;
+    }
+
+    .res-g , .res-r{
+        width: 95%;
+    }
+
+    .message-box{
+        width: 95%;
+    }
+}
+
 
     
