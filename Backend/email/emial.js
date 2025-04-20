@@ -1,28 +1,31 @@
-const nodemailer = require("nodemailer")
+
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // or use other email services like Outlook, Yahoo, etc.
-    auth: {
-      user: 'aayushjha0112@gmail.com',
-      pass: 'wnxg clqz spmu geud',
-    },
+  service: "gmail",
+  auth: {
+    user: "aayushjha0112@gmail.com",
+    pass: 'ktfn tohw kaxu hyds', // Use the generated App Password
+  },
 });
 
-const sendMail = (email , subject , text)=>{
-    const mailOptions = {
-        from: 'aayushjha0112@gmail.com',
-        to: email, // Recipient's email
-        subject: subject, // Email subject
-        text: text, // Email message
-      };
+const sendMail = (email, subject, text) => {
+  const mailOptions = {
+    from: "aayushjha0112@gmail.com",
+    to: email,
+    subject: subject,
+    text: text,
+  };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-           return false;
-        } else {
-            return true
-        }
-      });
-}
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      return false;
+    } else {
+      console.log("Email sent:", info.response);
+      return true;
+    }
+  });
+};
 
-module.exports = sendMail
+module.exports = sendMail;
